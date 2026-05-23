@@ -1,0 +1,15 @@
+# Allow all search engines
+User-agent: *
+Allow: /
+
+# Block API and admin routes
+Disallow: /api/
+Disallow: /admin/
+Disallow: /.env
+Disallow: /.env.*
+
+# Crawl delay (optional - 1 second between requests)
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://yourdomain.com/sitemap.xml
