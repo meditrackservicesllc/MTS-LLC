@@ -49,7 +49,7 @@ export const metadata: Metadata = {
       "Complete RCM solutions including billing, coding, credentialing, and denial management for healthcare practices.",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://medtrackservices.com/og-image.png",
         width: 1200,
         height: 630,
         alt: "MTS LLC - Medical Billing Solutions",
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
   card: "summary_large_image",
   title: "MTS LLC | Medical Billing Solutions",
   description: "Revenue cycle management and billing services for healthcare practices.",
-  images: ["/og-image.png"],  // ← same image
+  images: ["https://medtrackservices.com/og-image.png"],  // ← same image
   creator: "@mtsllc",
 },
   icons: {
