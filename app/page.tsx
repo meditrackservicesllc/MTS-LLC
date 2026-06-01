@@ -5,6 +5,7 @@ import CredentialingSection from "@/app/Components/CredentialingSection";
 import FreeMonthSection from "@/app/Components/FreeMonthSection";
 import NewsSection from "@/app/Components/NewsSection";
 import BillingSection from "./Components/BillingSection";
+import ReviewsSection from "./Components/ReviewsSection";
 
 export const metadata: Metadata = {
   title: "MTS LLC | Medical Billing, Coding & Credentialing Solutions",
@@ -106,13 +107,16 @@ export default function Home() {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="800">
-              <button className="bg-[#1E3A8A] text-white px-6 py-3 rounded-lg shadow-md hover:bg-[#172554] transition">
+              <Link href="/contact" className="bg-[#1E3A8A] text-white px-6 py-3 rounded-lg shadow-md hover:bg-[#172554] transition inline-block">
                 Book a Demo
-              </button>
+              </Link>
 
-              <button className="border border-[#99C050] text-[#93B45B] px-6 py-3 rounded-lg hover:bg-[#99C050] hover:text-white transition">
+              <Link 
+                href="/contact" 
+                className="border border-[#99C050] text-[#93B45B] px-6 py-3 rounded-lg hover:bg-[#99C050] hover:text-white transition inline-block"
+              >
                 Practice Audit
-              </button>
+              </Link>
             </div>
           </div>
 
@@ -312,6 +316,7 @@ export default function Home() {
       <FreeMonthSection />
       <NewsSection />
       <BillingSection />
+      <ReviewsSection />
     </main>
   );
 }
