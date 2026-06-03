@@ -162,6 +162,29 @@ export default function ReviewsSection() {
                   />
                 </div>
 
+                <div className="py-2">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">Your Rating*</label>
+                  <div className="flex gap-2">
+                    {[1, 2, 3, 4, 5].map(star => (
+                      <button
+                        key={star} type="button"
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(0)}
+                        onClick={() => setFormData({ ...formData, rating: star })}
+                        className="transition-transform active:scale-90"
+                        aria-label={`${star} star`}
+                      >
+                        <Star
+                          size={28}
+                          className={`transition-colors ${
+                            star <= (hoverRating || formData.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-200"
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 <div className="relative">
                   <textarea
                     required placeholder="Your Review* (Min 20 characters)"
