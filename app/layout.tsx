@@ -61,12 +61,11 @@ export const metadata: Metadata = {
   card: "summary_large_image",
   title: "MTS LLC | Medical Billing Solutions",
   description: "Revenue cycle management and billing services for healthcare practices.",
-  images: ["https://medtrackservices.com/og-image.png"],  // ← same image
+  images: ["https://medtrackservices.com/og-image.png"],
   creator: "@mtsllc",
 },
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-icon.png",
+    icon: "/favicon.svg",
   },
 };
 

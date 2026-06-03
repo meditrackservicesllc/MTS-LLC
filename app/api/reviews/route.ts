@@ -16,9 +16,9 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, role, practice, location, rating, reviewText } = body
+    const { name, reviewText } = body
 
-    if (!name || !role || !practice || !location || !rating || !reviewText) {
+    if (!name || !reviewText) {
       return NextResponse.json(
         { error: 'Missing required review fields.' },
         { status: 400 }
@@ -35,10 +35,10 @@ export async function POST(request: NextRequest) {
     const review = await prisma.review.create({
       data: {
         name: String(name),
-        role: String(role),
-        practice: String(practice),
-        location: String(location),
-        rating: Number(rating),
+        role: '',
+        practice: '',
+        location: '',
+        rating: 0,
         reviewText: String(reviewText),
         approved: true,
       },

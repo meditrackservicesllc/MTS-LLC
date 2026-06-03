@@ -23,13 +23,8 @@ export default function ReviewsSection() {
 
   const [formData, setFormData] = useState({
     name: '',
-    role: '',
-    practice: '',
-    location: '',
-    rating: 0,
     reviewText: '',
   });
-  const [hoverRating, setHoverRating] = useState(0);
 
   const fetchReviews = async () => {
     try {
@@ -49,7 +44,6 @@ export default function ReviewsSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (formData.rating === 0) return setStatus({ type: 'error', message: 'Please select a rating.' });
     if (formData.reviewText.length < 20) return;
 
     setIsSubmitting(true);
@@ -64,7 +58,7 @@ export default function ReviewsSection() {
 
       if (res.ok) {
         setStatus({ type: 'success', message: '✅ Thank you! Your review has been submitted and is pending approval.' });
-        setFormData({ name: '', role: '', practice: '', location: '', rating: 0, reviewText: '' });
+        setFormData({ name: '', reviewText: '' });
         setShowForm(false);
         fetchReviews();
       } else {
@@ -110,11 +104,13 @@ export default function ReviewsSection() {
             {reviews.map((rev) => (
               <div key={rev.id} className="bg-white rounded-2xl p-6 shadow-md border border-gray-100 flex flex-col hover:shadow-lg transition-shadow" data-aos="zoom-in">
                 <Quote className="text-teal-400 opacity-20 w-10 h-10 -ml-2 -mt-2" />
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} className={i < rev.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-200"} />
-                  ))}
-                </div>
+                {rev.rating > 0 && (
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={16} className={i < rev.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-200"} />
+                    ))}
+                  </div>
+                )}
                 <p className="text-gray-700 italic flex-grow leading-relaxed mb-6">"{rev.reviewText}"</p>
                 <div className="flex items-center gap-4 border-t border-gray-50 pt-4">
                   <div className="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
@@ -122,8 +118,12 @@ export default function ReviewsSection() {
                   </div>
                   <div className="min-w-0">
                     <h4 className="font-bold text-[#1A3151] text-sm truncate">{rev.name}</h4>
-                    <p className="text-[11px] text-slate-500 truncate">{rev.role} @ {rev.practice}</p>
-                    <p className="text-[10px] text-slate-400 font-medium uppercase mt-0.5">{rev.location} • {formatDate(rev.createdAt)}</p>
+                    {(rev.role || rev.practice || rev.location) && (
+                      <p className="text-[11px] text-slate-500 truncate">
+                        {[rev.role, rev.practice].filter(Boolean).join(' @ ')}
+                      </p>
+                    )}
+                    <p className="text-[10px] text-slate-400 font-medium uppercase mt-0.5">{formatDate(rev.createdAt)}</p>
                   </div>
                 </div>
               </div>
@@ -151,51 +151,12 @@ export default function ReviewsSection() {
             <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl border border-gray-100 p-8 text-left animate-in slide-in-from-bottom-4 duration-500">
               <h3 className="text-xl font-bold text-[#1A3151] mb-6">Submit Your Practice Review</h3>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
                   <input
                     type="text" required placeholder="Full Name*"
                     className="w-full bg-gray-50 border-gray-100 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
-                    value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
+                    value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })}
                   />
-                  <input
-                    type="text" required placeholder="Role / Title* (e.g. Practice Manager)"
-                    className="w-full bg-gray-50 border-gray-100 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
-                    value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})}
-                  />
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <input
-                    type="text" required placeholder="Practice Name*"
-                    className="w-full bg-gray-50 border-gray-100 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
-                    value={formData.practice} onChange={e => setFormData({...formData, practice: e.target.value})}
-                  />
-                  <input
-                    type="text" required placeholder="Location* (e.g. Dallas, TX)"
-                    className="w-full bg-gray-50 border-gray-100 rounded-xl p-3 text-sm outline-none focus:ring-2 focus:ring-[#1E3A8A]/20"
-                    value={formData.location} onChange={e => setFormData({...formData, location: e.target.value})}
-                  />
-                </div>
-                
-                <div className="py-2">
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">Your Rating*</label>
-                  <div className="flex gap-2">
-                    {[1, 2, 3, 4, 5].map(star => (
-                      <button
-                        key={star} type="button"
-                        onMouseEnter={() => setHoverRating(star)}
-                        onMouseLeave={() => setHoverRating(0)}
-                        onClick={() => setFormData({...formData, rating: star})}
-                        className="transition-transform active:scale-90"
-                      >
-                        <Star
-                          size={28}
-                          className={`transition-colors ${
-                            star <= (hoverRating || formData.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-200"
-                          }`}
-                        />
-                      </button>
-                    ))}
-                  </div>
                 </div>
 
                 <div className="relative">
@@ -204,7 +165,7 @@ export default function ReviewsSection() {
                     rows={4}
                     className="w-full bg-gray-50 border-gray-100 rounded-xl p-4 text-sm outline-none focus:ring-2 focus:ring-[#1E3A8A]/20 resize-none"
                     value={formData.reviewText}
-                    onChange={e => setFormData({...formData, reviewText: e.target.value})}
+                    onChange={e => setFormData({ ...formData, reviewText: e.target.value })}
                   />
                   <span className={`absolute bottom-3 right-3 text-[10px] font-bold ${formData.reviewText.length < 20 ? 'text-red-400' : 'text-slate-400'}`}>
                     {formData.reviewText.length} characters
