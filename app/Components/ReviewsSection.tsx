@@ -24,7 +24,9 @@ export default function ReviewsSection() {
   const [formData, setFormData] = useState({
     name: '',
     reviewText: '',
+    rating: 0,
   });
+  const [hoverRating, setHoverRating] = useState(0);
 
   const fetchReviews = async () => {
     try {
@@ -44,6 +46,7 @@ export default function ReviewsSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (formData.rating === 0) return setStatus({ type: 'error', message: 'Please select a rating.' });
     if (formData.reviewText.length < 20) return;
 
     setIsSubmitting(true);
@@ -58,7 +61,7 @@ export default function ReviewsSection() {
 
       if (res.ok) {
         setStatus({ type: 'success', message: '✅ Thank you! Your review has been submitted and is pending approval.' });
-        setFormData({ name: '', reviewText: '' });
+        setFormData({ name: '', reviewText: '', rating: 0 });
         setShowForm(false);
         fetchReviews();
       } else {
@@ -111,7 +114,7 @@ export default function ReviewsSection() {
                     ))}
                   </div>
                 )}
-                <p className="text-gray-700 italic flex-grow leading-relaxed mb-6">"{rev.reviewText}"</p>
+                <p className="text-gray-700 italic grow leading-relaxed mb-6">"{rev.reviewText}"</p>
                 <div className="flex items-center gap-4 border-t border-gray-50 pt-4">
                   <div className="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
                     {getInitials(rev.name)}
@@ -178,8 +181,8 @@ export default function ReviewsSection() {
 
                 <div className="flex gap-3 pt-2">
                   <button
-                    type="submit" disabled={isSubmitting || formData.reviewText.length < 20}
-                    className="flex-grow bg-[#1E3A8A] text-white p-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-[#172554] disabled:bg-slate-300 transition-all shadow-lg"
+                    type="submit" disabled={isSubmitting || formData.reviewText.length < 20 || formData.rating === 0}
+                    className="grow bg-[#1E3A8A] text-white p-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-[#172554] disabled:bg-slate-300 transition-all shadow-lg"
                   >
                     {isSubmitting ? <Loader2 className="animate-spin" /> : "Submit Review"}
                   </button>

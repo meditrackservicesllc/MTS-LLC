@@ -16,9 +16,9 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { name, reviewText } = body
+    const { name, reviewText, rating } = body
 
-    if (!name || !reviewText) {
+    if (!name || !reviewText || typeof rating === 'undefined') {
       return NextResponse.json(
         { error: 'Missing required review fields.' },
         { status: 400 }
@@ -32,13 +32,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const numericRating = Number(rating)
+    if (!Number.isInteger(numericRating) || numericRating < 1 || numericRating > 5) {
+      return NextResponse.json({ error: 'Rating must be an integer between 1 and 5.' }, { status: 400 })
+    }
+
     const review = await prisma.review.create({
       data: {
         name: String(name),
         role: '',
         practice: '',
         location: '',
-        rating: 0,
+        rating: numericRating,
         reviewText: String(reviewText),
         approved: true,
       },
