@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const recipient = process.env.CONTACT_FORM_RECIPIENT || 'meditrackservicesllc@gmail.com';
+    const recipient = process.env.CONTACT_FORM_RECIPIENT || 'info@medtrackservices.com';
     const formOrigin = form_origin || 'Contact Form Submission';
     const emailSubject = `${formOrigin} from ${fullName}`;
     const emailText = `New Contact Form Submission\n\nFull Name: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nWebsite: ${website || 'Not provided'}\nService Type: ${service_type || 'Not specified'}\nSpecialty: ${specialty || 'Not specified'}\nHealthcare Type: ${healthcare_type || 'Not specified'}\n${message ? `Message: ${message}\n` : ''}Submitted on: ${new Date().toLocaleString()}`;

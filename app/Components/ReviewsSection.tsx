@@ -31,10 +31,17 @@ export default function ReviewsSection() {
   const fetchReviews = async () => {
     try {
       const res = await fetch('/api/reviews');
+      if (!res.ok) {
+        const text = await res.text();
+        console.error('Reviews API error:', res.status, text);
+        setStatus({ type: 'error', message: 'Unable to load reviews at this time.' });
+        return;
+      }
       const data = await res.json();
       setReviews(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
+      setStatus({ type: 'error', message: 'Unable to load reviews at this time.' });
     } finally {
       setLoading(false);
     }
@@ -65,8 +72,17 @@ export default function ReviewsSection() {
         setShowForm(false);
         fetchReviews();
       } else {
-        const err = await res.json();
-        setStatus({ type: 'error', message: err.error || 'Something went wrong.' });
+        let errData: any = null;
+        try {
+          errData = await res.json();
+        } catch (parseError) {
+          console.error('Failed to parse error response as JSON:', parseError);
+        }
+        setStatus({
+          type: 'error',
+          message:
+            errData?.error || `Something went wrong. (${res.status})`,
+        });
       }
     } catch (err) {
       setStatus({ type: 'error', message: 'Failed to connect to server.' });

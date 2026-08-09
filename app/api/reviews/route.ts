@@ -1,8 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+
+const loadPrisma = async () => {
+  try {
+    const { prisma } = await import('@/lib/prisma')
+    return prisma
+  } catch (error) {
+    console.error('Unable to load Prisma for /api/reviews:', error)
+    return null
+  }
+}
 
 export async function GET() {
   try {
+    const prisma = await loadPrisma()
+    if (!prisma) {
+      return NextResponse.json([], { status: 200 })
+    }
+
     const reviews = await prisma.review.findMany({
       orderBy: { createdAt: 'desc' },
     })
@@ -15,6 +29,10 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const prisma = await loadPrisma()
+    if (!prisma) {
+      return NextResponse.json({ error: 'Review service unavailable' }, { status: 503 })
+    }
     const body = await request.json()
     const { name, reviewText, rating } = body
 

@@ -241,17 +241,17 @@ export default function ContactPage() {
             {
               icon: <Mail className="w-7 h-7" />,
               label: "Email",
-              value: "meditrackservicesllc@gmail.com",
+              value: "info@medtrackservices.com",
             },
             {
               icon: <Phone className="w-7 h-7" />,
               label: "Phone",
-              value: "Available upon request",
+              value: "+1 (929) 652-7685",
             },
             {
               icon: <MapPin className="w-7 h-7" />,
               label: "Location",
-              value: "Nationwide Coverage",
+              value: "30 N GOULD ST STE R SHERIDAN, WY 82801",
             },
           ].map((card, i) => (
             <div

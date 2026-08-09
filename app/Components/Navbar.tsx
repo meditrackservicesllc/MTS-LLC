@@ -285,14 +285,14 @@ export default function Navbar() {
       <div className="bg-linear-to-r from-slate-900 via-[#1E3A8A] to-slate-900 text-slate-200 py-2 px-6 text-[13px] tracking-wide font-medium z-50 relative border-b border-[#99C050]/30 shadow-sm">
         <div className="max-w-7xl mx-auto flex justify-center md:justify-end items-center">
           <a
-            href="mailto:meditrackservicesllc@gmail.com"
+            href="mailto:info@medtrackservices.com"
             className="flex items-center gap-2 hover:text-[#99C050] transition-colors group"
           >
             <Mail className="w-4 h-4 text-[#99C050] group-hover:scale-110 transition-transform" />
             <span>
               Drop us an email:{" "}
               <span className="font-bold text-white tracking-wide">
-                meditrackservicesllc@gmail.com
+                info@medtrackservices.com
               </span>
             </span>
           </a>
